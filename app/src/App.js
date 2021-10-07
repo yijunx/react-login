@@ -1,29 +1,37 @@
 import React, { useState } from "react";
 import Home from "./views/Home";
 import Header from "./components/Header";
+import axios from "axios";
 
 function App() {
-  const adminUser = {
-    name: "admin",
-    email: "admin@tom.com",
-    password: "admin",
-  };
+  //   const adminUser = {
+  //     name: "admin",
+  //     email: "admin@tom.com",
+  //     password: "admin",
+  //   };
 
   const [user, setUser] = useState({ email: "", name: "" });
   const [error, setError] = useState("");
 
   const Login = (details) => {
     console.log(details);
-    if (details.email === adminUser.email) {
-      console.log("logged in");
-      setUser({
-        name: adminUser.name,
-        email: adminUser.email,
+    axios
+      .post("https://auth-test.freedynamicdns.net/login", details)
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          setUser({
+            name: response.data.response.name,
+            email: response.data.response.email,
+          });
+        } else {
+          console.log("dtail not match");
+          setError("Details do not match!!!");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
       });
-    } else {
-      console.log("dtail not match");
-      setError("Details do not match");
-    }
   };
 
   const Logout = () => {

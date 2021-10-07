@@ -11,7 +11,7 @@ function LoginBlock({ Login, error }) {
       <form onSubmit={submitHandler}>
         <div className="form-inner">
           <h2>Login</h2>
-          {error != "" ? <div>{error}</div> : ""}
+          {error !== "" ? <div>{error}</div> : ""}
           <div className="form-group">
             <label htmlFor="email">Email: </label>
             <input

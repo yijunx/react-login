@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
-class Resource extends React.Component {
-  render() {
-    return <h1> Hello this is resource block </h1>;
-  }
+function ResourceBlock() {
+  const [resources, setResources] = useState([]);
+  let content = null;
+  const getResourcesHandler = (e) => {
+    e.preventDefault();
+    axios
+      .get("https://auth-test.freedynamicdns.net/resources")
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          setResources(response.data.response);
+          console.log(resources);
+        }
+      });
+  };
+  content = resources.map((item) => (
+    <div>
+      <p>resource id: {item.id}</p>
+    </div>
+  ));
+  console.log(content);
+  return (
+    <div>
+      <button onClick={getResourcesHandler}>show resource</button>
+      <div>{content}</div>
+    </div>
+  );
 }
 
-export default Resource;
+export default ResourceBlock;
