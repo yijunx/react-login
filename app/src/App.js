@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Home from "./views/Home";
 import Header from "./components/Header";
 import axios from "axios";
+import { UserContext } from "./UserContext";
 
 function App() {
   //   const adminUser = {
@@ -54,8 +55,10 @@ function App() {
   };
   return (
     <div>
-      <Header user={user} />
-      <Home user={user} Login={Login} Logout={Logout} error={error} />
+      <UserContext.Provider value="hello from context">
+        <Header user={user} />
+        <Home user={user} Login={Login} Logout={Logout} error={error} />
+      </UserContext.Provider>
     </div>
   );
 }

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import LoginBlock from "../components/LoginBlock";
 import ResourceBlock from "../components/ResourceBlock";
+import { UserContext } from "../UserContext";
 
 function Home({ user, Login, Logout, error }) {
+  const message = useContext(UserContext);
   return (
     <div>
       <h1>login logout test</h1>
@@ -14,6 +16,7 @@ function Home({ user, Login, Logout, error }) {
       ) : (
         <LoginBlock Login={Login} error={error} />
       )}
+      {message}
       <ResourceBlock />
     </div>
   );
