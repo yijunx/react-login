@@ -1,18 +1,17 @@
 import React, { useState } from "react";
+import { login } from "../utils/loginUtils";
 
-function LoginBlock({ Login, error }) {
+function LoginBlock({ setUser, setError }) {
   const [details, setDetails] = useState({ password: "", email: "" });
   const submitHandler = (e) => {
     e.preventDefault();
-    Login(details);
+    login(details, setUser, setError);
   };
   return (
     <div>
       <form onSubmit={submitHandler}>
         <div className="form-inner">
-          <h2>Login</h2>
-          {error !== "" ? <div>{error}</div> : ""}
-          <div className="form-group">
+          <span className="form-group">
             <label htmlFor="email">Email: </label>
             <input
               type="email"
@@ -23,8 +22,8 @@ function LoginBlock({ Login, error }) {
               }
               value={details.email}
             />
-          </div>
-          <div className="form-group">
+          </span>
+          <span className="form-group">
             <label htmlFor="password">Password: </label>
             <input
               type="password"
@@ -35,7 +34,7 @@ function LoginBlock({ Login, error }) {
               }
               value={details.password}
             />
-          </div>
+          </span>
           <input type="submit" value="LOGIN" />
         </div>
       </form>
