@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Home from "./views/Home";
 import Header from "./components/Header";
 import axios from "axios";
@@ -9,6 +9,20 @@ function App() {
   //     email: "admin@tom.com",
   //     password: "admin",
   //   };
+
+  useEffect(() => {
+    const getCsrfToken = () => {
+      axios
+        .get("https://auth-test.freedynamicdns.net/csrf-token")
+        .then((response) => {
+          console.log(response);
+          axios.defaults.headers.post["X-CSRF-Token"] =
+            response.data.myCsrfToken;
+        });
+    };
+
+    getCsrfToken();
+  }, []);
 
   const [user, setUser] = useState({ email: "", name: "" });
   const [error, setError] = useState("");
