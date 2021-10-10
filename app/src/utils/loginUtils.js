@@ -8,7 +8,9 @@ export const CSRF = () => {
         .get("https://auth-test.freedynamicdns.net/csrf-token")
         .then((response) => {
           console.log(response);
-          axios.defaults.headers.post["X-CSRF-Token"] =
+          // here i use .common, because backend all endpoints will check CSRF, include get
+          // seems that can use .post.. but backend needs to do the changes..
+          axios.defaults.headers.common["X-CSRF-Token"] =
             response.data.myCsrfToken;
         });
     };
@@ -29,6 +31,9 @@ export const login = (details, setUser, setError) => {
           email: response.data.response.email,
         });
         console.log("logged in");
+        // write to localstorage
+        window.localStorage.setItem("name", response.data.response.name);
+        window.localStorage.setItem("email", response.data.response.email);
       } else {
         console.log("dtail not match");
         setError("Details do not match!!!");
@@ -41,6 +46,24 @@ export const login = (details, setUser, setError) => {
 
 export const logout = (setUser) => {
   console.log("Logout");
+  // setUser to null
   setUser(null);
   // need to take out the cookie
+  axios.post("https://auth-test.freedynamicdns.net/logout").then((response) => {
+    console.log(response);
+  });
+  // erase local storage
+  window.localStorage.removeItem("name");
+  window.localStorage.removeItem("email");
+};
+
+export const getCurrentUser = () => {
+  if (window.localStorage.getItem("name")) {
+    return {
+      name: window.localStorage.getItem("name"),
+      email: window.localStorage.getItem("email"),
+    };
+  } else {
+    return null;
+  }
 };

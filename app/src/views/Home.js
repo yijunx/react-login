@@ -3,7 +3,11 @@ import ResourceBlock from "../components/ResourceBlock";
 import { UserContext } from "../UserContext";
 
 function Home() {
-  const { user, ...rest } = useContext(UserContext);
+  const {
+    user,
+    // eslint-disable-next-line
+    ...rest
+  } = useContext(UserContext);
   return (
     <div>
       {user ? <p>we have a user: {user.name}</p> : ""}
