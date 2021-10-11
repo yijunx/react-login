@@ -1,18 +1,17 @@
 import { useEffect } from "react";
 import axios from "axios";
+import env from "react-dotenv";
 
 export const CSRF = () => {
   useEffect(() => {
     const getCsrfToken = () => {
-      axios
-        .get("https://auth-test.freedynamicdns.net/csrf-token")
-        .then((response) => {
-          console.log(response);
-          // here i use .common, because backend all endpoints will check CSRF, include get
-          // seems that can use .post.. but backend needs to do the changes..
-          axios.defaults.headers.common["X-CSRF-Token"] =
-            response.data.myCsrfToken;
-        });
+      axios.get(env.API_BASE_URL + "/csrf-token").then((response) => {
+        console.log(response);
+        // here i use .common, because backend all endpoints will check CSRF, include get
+        // seems that can use .post.. but backend needs to do the changes..
+        axios.defaults.headers.common["X-CSRF-Token"] =
+          response.data.myCsrfToken;
+      });
     };
 
     getCsrfToken();
@@ -22,7 +21,12 @@ export const CSRF = () => {
 export const login = (details, setUser, setError) => {
   console.log(details);
   axios
-    .post("https://auth-test.freedynamicdns.net/login", details)
+    .post(env.API_BASE_URL + "/login", details, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json", // <-- here
+      },
+    })
     .then((response) => {
       console.log(response);
       if (response.data.success) {
@@ -49,7 +53,7 @@ export const logout = (setUser) => {
   // setUser to null
   setUser(null);
   // need to take out the cookie
-  axios.post("https://auth-test.freedynamicdns.net/logout").then((response) => {
+  axios.post(env.API_BASE_URL + "/logout").then((response) => {
     console.log(response);
   });
   // erase local storage
@@ -66,4 +70,16 @@ export const getCurrentUser = () => {
   } else {
     return null;
   }
+};
+
+export const axios_instance = () => {
+  // will not work with token with httpOnly set!!!
+  // A cookie with the HttpOnly attribute is inaccessible to the JavaScript Document.cookie API
+  // const cookies = new Cookies();
+  // const token = cookies.get("token");
+  return axios.create({
+    baseURL: env.API_BASE_URL,
+    timeout: 3000,
+    // headers: { Authorization: "Bearer " + token },
+  });
 };

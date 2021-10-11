@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { axios_instance } from "../utils/loginUtils";
 
 function ResourceBlock() {
   const [resources, setResources] = useState([]);
   let content = null;
+  const axios_ins = axios_instance();
   const getResourcesHandler = (e) => {
     e.preventDefault();
-    axios
-      .get("https://auth-test.freedynamicdns.net/resources")
-      .then((response) => {
-        console.log(response);
-        if (response.data.success) {
-          setResources(response.data.response);
-          console.log(resources);
-        }
-      });
+    axios_ins.get("/resources").then((response) => {
+      console.log(response);
+      if (response.data.success) {
+        setResources(response.data.response);
+        console.log(resources);
+      }
+    });
   };
   content = resources.map((item) => (
     <div>
