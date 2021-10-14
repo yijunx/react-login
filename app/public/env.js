@@ -47,5 +47,6 @@ window.env = {
   "npm_command": "start",
   "INIT_CWD": "/opt/yijunx/code/app",
   "EDITOR": "vi",
-  "API_BASE_URL": "https://auth-test.freedynamicdns.net"
+  "API_BASE_URL": "https://auth-test.freedynamicdns.net",
+  "GOOGLE_CLIENT_ID": "551917852783-56odpcilbvuohcsdv9eoj0v53063hps6.apps.googleusercontent.com"
 };
