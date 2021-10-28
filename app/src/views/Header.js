@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import LoginBlock from "../components/LoginBlock";
 import LogoutBlock from "../components/LogoutBlock";
+import UserRegisterBlock from "../components/UserRegisterBlock";
 import { UserContext } from "../UserContext";
 
 function Header() {
@@ -14,6 +15,7 @@ function Header() {
           <LogoutBlock setUser={setUser}></LogoutBlock>
         ) : (
           <span>
+            <UserRegisterBlock setError={setError} />
             {error}
             <LoginBlock setUser={setUser} setError={setError} />
           </span>

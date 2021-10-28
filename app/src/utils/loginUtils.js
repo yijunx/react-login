@@ -18,6 +18,33 @@ export const CSRF = () => {
   }, []);
 };
 
+export const registerUserWithPassword = (details, setError) => {
+  console.log(details);
+  axios
+    .post(env.API_BASE_URL + "/register", details, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json", // <-- here
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      if (response.data.success) {
+        // setUser({
+        //   name: response.data.response.name,
+        //   email: response.data.response.email,
+        // });
+        console.log("registered");
+        setError("an email is sent, pls click the link there");
+      } else {
+        setError(response.data.message);
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
 export const loginWithGoogle = (id_token, setUser, setError) => {
   console.log(id_token);
   axios
