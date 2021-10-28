@@ -1,15 +1,23 @@
 import React, { useState } from "react";
-import { login } from "../utils/loginUtils";
+import { login, loginWithGoogle } from "../utils/loginUtils";
+import GoogleLogin from "react-google-login";
+import env from "react-dotenv";
 
 function LoginBlock({ setUser, setError }) {
   const [details, setDetails] = useState({ password: "", email: "" });
-  const submitHandler = (e) => {
+  const loginSubmitHandler = (e) => {
     e.preventDefault();
     login(details, setUser, setError);
   };
+  const googleLoginHandler = (response) => {
+    console.log("here is google response!!");
+    console.log(response.tokenId);
+    loginWithGoogle(response.tokenId, setUser, setError);
+  };
+
   return (
     <div>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={loginSubmitHandler}>
         <div className="form-inner">
           <span className="form-group">
             <label htmlFor="email">Email: </label>
@@ -38,6 +46,13 @@ function LoginBlock({ setUser, setError }) {
           <input type="submit" value="LOGIN" />
         </div>
       </form>
+      <GoogleLogin
+        clientId={env.GOOGLE_CLIENT_ID}
+        buttonText="Login"
+        onSuccess={googleLoginHandler}
+        onFailure={googleLoginHandler}
+        cookiePolicy={"single_host_origin"}
+      />
     </div>
   );
 }
